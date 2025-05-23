@@ -55,7 +55,23 @@ public class ClientController implements Initializable {
     @FXML
     void btnSendOnAction(ActionEvent event) throws IOException {
         dataOutputStream= new DataOutputStream( socket.getOutputStream());
-        dataOutputStream.writeUTF( "client :" + inputField.getText());
+
+        String message = inputField.getText();
+        String sentMessage = "";
+        if (message.equals("TIME")){
+            sentMessage = LocalTime.now().toString();
+        } else if (message.equals("DATE")) {
+            sentMessage = LocalDate.now().toString();
+        }else if (message.equals("UPTIME")) {
+
+        } else if (message.equals("BYE")) {
+            socket.close();
+        }else{
+            sentMessage = "invalid command";
+        }
+        System.out.println("message" + sentMessage);
+
+        dataOutputStream.writeUTF( "Client :" + sentMessage);
         dataOutputStream.flush();
         inputField.setText("");
 
